@@ -134,9 +134,9 @@ function modifyQuantity() {
 }
 
 
-const emailRegex = /^[\w_-]+@[\w-]+\.[a-z]{2,4}$/i
-const letterRegex = /^[a-zA-z-]*$/
-const letternumberRegex = /^[a-zA-z0-9_.-]*$/
+const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+
+const letterRegex = /^[a-zA-z-]*$/;
 const inputs = document.querySelectorAll(".cart__order__form__question input")
 
 let firstname, lastname, address, city, email
@@ -215,8 +215,6 @@ function addressChecker(id, value) {
         errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
     } else if (value.length > 50) {
         errorDisplay(id, `Le champs doit contenir au maximum 50 caractères`)
-    } else if (!value.match(letternumberRegex)) {
-        errorDisplay(id, `Le champs doit contenir que des lettres`)
     } else {
         errorDisplay(id, "", true)
         address = value
@@ -238,7 +236,7 @@ function cityChecker(id, value) {
 // Checking input for the email
 function emailChecker(id, value) {
     if (!value.match(emailRegex)) {
-        errorDisplay(id, "Entrez un email valide")
+        errorDisplay(id, "Veuillez entrez un email valide")
     } else {
         errorDisplay(id, "", true)
         email = value
