@@ -9,7 +9,6 @@ const arrProduct = []
 const calcTotalQuantity = []
 const calcTotalPrice = []
 const productsId = []
-// NE PAS OUBLIER DE SORT() LE TABLEAU "PRODUCTS" console.log plus haut
 
 // Boucle des produits du Local Storage, pour chaque produit je lance la function productAPI
 for (let i of products){
@@ -135,7 +134,9 @@ function modifyQuantity() {
 }
 
 
-const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+const emailRegex = /^[\w_-]+@[\w-]+\.[a-z]{2,4}$/i
+const letterRegex = /^[a-zA-z-]*$/
+const letternumberRegex = /^[a-zA-z0-9_.-]*$/
 const inputs = document.querySelectorAll(".cart__order__form__question input")
 
 let firstname, lastname, address, city, email
@@ -188,6 +189,8 @@ function firstnameChecker(id, value) {
         errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
     } else if (value.length > 20) {
         errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
+    } else if (!value.match(letterRegex)) {
+        errorDisplay(id, `Le champs doit contenir que des lettres`)
     } else {
         errorDisplay(id, "", true)
         firstname = value
@@ -199,6 +202,8 @@ function lastnameChecker(id, value) {
         errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
     } else if (value.length > 20) {
         errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
+    } else if (!value.match(letterRegex)) {
+        errorDisplay(id, `Le champs doit contenir que des lettres`)
     } else {
         errorDisplay(id, "", true)
         lastname = value
@@ -210,6 +215,8 @@ function addressChecker(id, value) {
         errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
     } else if (value.length > 50) {
         errorDisplay(id, `Le champs doit contenir au maximum 50 caractères`)
+    } else if (!value.match(letternumberRegex)) {
+        errorDisplay(id, `Le champs doit contenir que des lettres`)
     } else {
         errorDisplay(id, "", true)
         address = value
@@ -221,6 +228,8 @@ function cityChecker(id, value) {
         errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
     } else if (value.length > 20) {
         errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
+    } else if (!value.match(letterRegex)) {
+        errorDisplay(id, `Le champs doit contenir que des lettres`)
     } else {
         errorDisplay(id, "", true)
         city = value
