@@ -248,11 +248,6 @@ const order = document.querySelector(".cart__order__form")
 
 order.addEventListener("submit", (e) => {
     e.preventDefault()
-
-    // Vider tout les inputs
-    inputs.forEach((input) => {
-        input.value = ""
-    })
     // Création de l'object de la requête 
     const body = {
         contact: {
@@ -264,22 +259,31 @@ order.addEventListener("submit", (e) => {
         },
         products: productsId,
     }
-    // Vider le localStorage
-    localStorage.removeItem("products")
-    // Rêquete post avec fetch API : envoi des données format JSON, l'api nous réponds en envoyant un numéro de commande
-    fetch("http://localhost:3000/api/products/order", {
-        method: "POST",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body),
-    }) 
-    .then((res) => res.json())
-    .then((data) => {
-        const orderId = data.orderId
-        location.href = `./confirmation.html?orderId=${orderId}`
-    })
+
+    // Si les variables sont définies
+    if (firstname && lastname && address && city && email) {
+        // Vider tout les inputs
+        inputs.forEach((input) => {
+            input.value = ""
+        })
+        // Vider le localStorage
+        localStorage.removeItem("products")
+        // Rêquete post avec fetch API : envoi des données format JSON, l'api nous réponds en envoyant un numéro de commande
+        fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body),
+        }) 
+        .then((res) => res.json())
+        .then((data) => {
+            const orderId = data.orderId
+            location.href = `./confirmation.html?orderId=${orderId}`
+        })
+    }
+
 })
 
 
