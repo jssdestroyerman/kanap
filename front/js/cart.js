@@ -116,6 +116,11 @@ function modifyQuantity() {
         const closest = i.closest("article")
 
         i.addEventListener("change", (e) => {
+            // Si la quantité est de 0 ou plus de 100 alors j'affiche un message d'erreur et je remets la valeur à 1
+            if (e.target.value == 0 || e.target.value > 100) {
+                alert("Veuillez choisir un nombre d'article entre 1 et 100")
+                e.target.value = 1
+            }
             // Lors du click si l'id du produit cliqué et le même que celui présent dans la variable products
             let foundProduct = products.find(p => p.id == closest.dataset.id && p.color == closest.dataset.color)
 
@@ -135,8 +140,7 @@ function modifyQuantity() {
 
 
 const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-
-const letterRegex = /^[a-zA-z-]*$/;
+const letterRegex = /^[a-zA-z- ]*$/;
 const inputs = document.querySelectorAll(".cart__order__form__question input")
 
 let firstname, lastname, address, city, email
