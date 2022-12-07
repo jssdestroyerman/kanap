@@ -271,7 +271,7 @@ order.addEventListener("submit", (e) => {
             input.value = ""
         })
         // Vider le localStorage
-        localStorage.removeItem("products")
+        localStorage.removeItem("products") // vider dans .then
         // Rêquete post avec fetch API : envoi des données format JSON, l'api nous réponds en envoyant un numéro de commande
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",

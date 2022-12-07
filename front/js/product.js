@@ -18,21 +18,18 @@ async function productAPI() {
     await fetch(`http://localhost:3000/api/products/${urlId}`)
         .then((res) => res.json())
         .then((data) => productDisplay(data))
+        .catch((err) => console.log(err))
 }
 productAPI()
 
 function productDisplay(product) {
     console.log(product);
-
-    /*POURQUOI BOUCLES FOR OF NE FONCTIONNE PAS ? */
-
-
     
     // Afficher les éléments dans le DOM
 
     // Boucle for pour afficher seulement les couleurs disponibles sur cet article
-    for (let i = 0; i < product.colors.length; i++) {
-        colors.innerHTML += `<option value="${product.colors[i]}">${product.colors[i]}</option>`
+    for (let i of product.colors) {
+        colors.innerHTML += `<option value="${i}">${i}</option>`
     }
 
     itemImg.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`
@@ -70,7 +67,6 @@ addTocart.addEventListener("click", () => {
         } else {
             productInLocalStorage.push(localCartObj)
         }
-
         localStorage.setItem("products", JSON.stringify(productInLocalStorage))
     }
 
