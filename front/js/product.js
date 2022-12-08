@@ -61,7 +61,12 @@ addTocart.addEventListener("click", () => {
     // Function > si l'object présent dans ProductInlocalStorage à le même id et la même couleur alors j'additionne la quantité, sinon je push un nouvel object.
     function storageProduct() {
         let foundProduct = productInLocalStorage.find(p => p.id == localCartObj.id && p.color == localCartObj.color)
-    
+        // Solution plus simple ?????????????????????
+        // Vérification du nombre de produit ajouté au panier
+        if (foundProduct && foundProduct.quantity + quantityValue > 100) {
+            alert("Le nombre d'article maximum est de 100")
+            foundProduct.quantity -= quantityValue
+        }
         if (foundProduct) {
             foundProduct.quantity = localCartObj.quantity + foundProduct.quantity
         } else {
