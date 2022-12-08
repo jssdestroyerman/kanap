@@ -146,31 +146,30 @@ const inputs = document.querySelectorAll(".cart__order__form__question input")
 
 let firstname, lastname, address, city, email
 
-// Dans chaque input, si une donnée est reçue, on récupère son id et je lance la function correspondante en mettant comme paramètre son id et sa value
-inputs.forEach((input) => {
-    input.addEventListener("input", (e) => {
-        console.log(e.target.id);
-       switch(e.target.id) {
-        case "firstName":
-            firstnameChecker(e.target.id, e.target.value)
-            break
-        case "lastName":
-            lastnameChecker(e.target.id, e.target.value)
-            break
-        case "address":
-            addressChecker(e.target.id, e.target.value)
-            break
-        case "city":
-            cityChecker(e.target.id, e.target.value)
-            break
-        case "email":
-            emailChecker(e.target.id, e.target.value)
-            break
-        default: 
-            null
-       }
+// Function de vérification des inputs, dans chaque input, on récupère son id et je lance la function correspondante en mettant comme paramètre son id et sa value
+function inputChecker() {
+    inputs.forEach((input) => {
+        switch(input.id) {
+            case "firstName":
+                firstnameChecker(input.id, input.value)
+                break
+            case "lastName":
+                lastnameChecker(input.id, input.value)
+                break
+            case "address":
+                addressChecker(input.id, input.value)
+                break
+            case "city":
+                cityChecker(input.id, input.value)
+                break
+            case "email":
+                emailChecker(input.id, input.value)
+                break
+            default: 
+                null
+        }
     })
-})
+}
 
 /** 
  * Form function
@@ -190,8 +189,8 @@ function errorDisplay(id, message, valid) {
 }
 // Checking input for the firstname
 function firstnameChecker(id, value) {
-    if(value.length < 2) {
-        errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
+    if(value.length < 3) {
+        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
     } else if (value.length > 20) {
         errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
     } else if (!value.match(letterRegex)) {
@@ -203,8 +202,8 @@ function firstnameChecker(id, value) {
 }
 // Checking input for the lastname
 function lastnameChecker(id, value) {
-    if(value.length < 2) {
-        errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
+    if(value.length < 3) {
+        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
     } else if (value.length > 20) {
         errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
     } else if (!value.match(letterRegex)) {
@@ -216,8 +215,8 @@ function lastnameChecker(id, value) {
 }
 // Checking input for the address
 function addressChecker(id, value) {
-    if(value.length < 2) {
-        errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
+    if(value.length < 3) {
+        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
     } else if (value.length > 50) {
         errorDisplay(id, `Le champs doit contenir au maximum 50 caractères`)
     } else {
@@ -227,8 +226,8 @@ function addressChecker(id, value) {
 }
 // Checking input for the city
 function cityChecker(id, value) {
-    if(value.length < 2) {
-        errorDisplay(id, "Le champs doit contenir au minimum 2 caractères")
+    if(value.length < 3) {
+        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
     } else if (value.length > 20) {
         errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
     } else if (!value.match(letterRegex)) {
@@ -253,6 +252,8 @@ const order = document.querySelector(".cart__order__form")
 
 order.addEventListener("submit", (e) => {
     e.preventDefault()
+    // Fonction de vérification des inputs
+    inputChecker()
     // Création de l'object de la requête 
     const body = {
         contact: {
