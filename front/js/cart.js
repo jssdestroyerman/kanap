@@ -22,6 +22,7 @@ async function productAPI(id, color, quantity) {
     await fetch(`http://localhost:3000/api/products/${id}`)
         .then((res) => res.json())
         .then((data) => productDisplay(data, color, quantity)) 
+        .catch((err) => console.log(err))
 }
 
 /**
@@ -101,7 +102,7 @@ function deleteProduct() {
 
             // Actualiser le localStorage
             localStorage.setItem("products", JSON.stringify(products))
-            /* AUTRE SOLUTION ????????????????????? */ 
+            // Raffraichissement de la page pour actualiser le localProduct
             location.reload()
         })
     }
@@ -287,30 +288,4 @@ order.addEventListener("submit", (e) => {
             location.href = `./confirmation.html?orderId=${orderId}`
         })
     }
-
 })
-
-
-
-
-// comment pourais-je faire pour assigner la value de l'input à la bonne variable déclarée plus haut 
-
-
-/* le cas switch(e.target.id) {
-        case "firstName":
-
-        case "lastName":
-        case "city":
-            basicChecker(e.target.id, e.target.value)
-            break
-        case "address":
-            basicChecker(e.target.id, e.target.value)
-            break
-        case "email":
-            emailChecker(e.target.id, e.target.value)
-            break
-        default: 
-            null
-       }
-
-       */
