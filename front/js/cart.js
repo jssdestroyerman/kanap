@@ -59,7 +59,7 @@ function productDisplay(product, color, quantity) {
 
     // Appel des function pour supprimer et modifier la quantité des produits
     deleteProduct()
-    modifyQuantity()
+    modifyQuantity(quantity)
 
     //-------------------------------------------------------------
 
@@ -109,7 +109,7 @@ function deleteProduct() {
 }
 
 // Function pour modifier la quantité
-function modifyQuantity() {
+function modifyQuantity(quantity) {
     const itemQuantity = document.querySelectorAll(".itemQuantity")
     // console.log(itemQuantity);
 
@@ -117,10 +117,10 @@ function modifyQuantity() {
         const closest = i.closest("article")
 
         i.addEventListener("change", (e) => {
-            // Si la quantité est de 0 ou plus de 100 alors j'affiche un message d'erreur et je remets la valeur à 1
+            // Si la quantité est de 0 ou plus de 100 alors j'affiche un message d'erreur et je remets la valeur précedente
             if (e.target.value == 0 || e.target.value > 100) {
                 alert("Veuillez choisir un nombre d'article entre 1 et 100")
-                e.target.value = 1
+                e.target.value = quantity
             }
             // Lors du click si l'id du produit cliqué et le même que celui présent dans la variable products
             let foundProduct = products.find(p => p.id == closest.dataset.id && p.color == closest.dataset.color)

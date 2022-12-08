@@ -72,6 +72,7 @@ addTocart.addEventListener("click", () => {
         } else {
             productInLocalStorage.push(localCartObj)
         }
+        alert("Produit(s) ajouté(s) au panier")
         localStorage.setItem("products", JSON.stringify(productInLocalStorage))
     }
 
