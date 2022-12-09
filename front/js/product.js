@@ -61,26 +61,25 @@ addTocart.addEventListener("click", () => {
     // Function > si l'object présent dans ProductInlocalStorage à le même id et la même couleur alors j'additionne la quantité, sinon je push un nouvel object.
     function storageProduct() {
         let foundProduct = productInLocalStorage.find(p => p.id == localCartObj.id && p.color == localCartObj.color)
-        // Solution plus simple ?????????????????????
+
         // Vérification du nombre de produit ajouté au panier
         if (foundProduct && foundProduct.quantity + quantityValue > 100) {
             alert("Le nombre d'article maximum est de 100")
-            foundProduct.quantity -= quantityValue
-        }
-        if (foundProduct) {
+            foundProduct.quantity = 100
+        } else if (foundProduct) {
             foundProduct.quantity = localCartObj.quantity + foundProduct.quantity
+            alert("Produit(s) ajouté(s) au panier")
         } else {
             productInLocalStorage.push(localCartObj)
+            alert("Produit(s) ajouté(s) au panier")
         }
-        alert("Produit(s) ajouté(s) au panier")
         localStorage.setItem("products", JSON.stringify(productInLocalStorage))
     }
 
     // Vérification si les champs sont vides, inférieur à 1 ou supérieur à 100
     if (colors.value === "" || quantity.value < 1 || quantity.value > 100) {
-        alert("Veuillez choisir une couleur et un nombre d'article")
-    }
-    else if  (productInLocalStorage) {
+        alert("Veuillez choisir une couleur et un nombre d'article entre 1 et 100")
+    } else if  (productInLocalStorage) {
         storageProduct()
     } else {
         productInLocalStorage = []
