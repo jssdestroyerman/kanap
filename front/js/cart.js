@@ -151,19 +151,19 @@ function inputChecker() {
     inputs.forEach((input) => {
         switch(input.id) {
             case "firstName":
-                firstnameChecker(input.id, input.value)
+                firstnameChecker(input.id, input.value.trim())
                 break
             case "lastName":
-                lastnameChecker(input.id, input.value)
+                lastnameChecker(input.id, input.value.trim())
                 break
             case "address":
-                addressChecker(input.id, input.value)
+                addressChecker(input.id, input.value.trim())
                 break
             case "city":
-                cityChecker(input.id, input.value)
+                cityChecker(input.id, input.value.trim())
                 break
             case "email":
-                emailChecker(input.id, input.value)
+                emailChecker(input.id, input.value.trim())
                 break
             default: 
                 null
@@ -266,6 +266,7 @@ order.addEventListener("submit", (e) => {
         products: productsId,
     }
 
+    console.log(body)
     // Si les variables sont définies
     if (firstname && lastname && address && city && email) {
         // Vider tout les inputs
