@@ -140,139 +140,86 @@ function modifyQuantity(quantity) {
 }
 
 
-const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-const letterRegex = /^[a-zA-z- ]*$/;
+const emailRegex = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
+const letterRegex = /^[a-zA-z- ]*$/
 const inputs = document.querySelectorAll(".cart__order__form__question input")
+const inputsError = document.querySelectorAll(".cart__order__form__question p")
+const order = document.querySelector(".cart__order__form")
+const firstName = document.getElementById("firstName")
+const lastName = document.getElementById("lastName")
+const address = document.getElementById("address")
+const city = document.getElementById("city")
+const email = document.getElementById("email")
 
-let firstname, lastname, address, city, email
-
-// Function de vérification des inputs, dans chaque input, on récupère son id et je lance la function correspondante en mettant comme paramètre son id et sa value
-function inputChecker() {
+function checkInput() {
     inputs.forEach((input) => {
-        switch(input.id) {
+        switch (input.id) {
             case "firstName":
-                firstnameChecker(input.id, input.value.trim())
-                break
             case "lastName":
-                lastnameChecker(input.id, input.value.trim())
+            case "city":
+                if (input.value.length < 3 || input.value.length > 20) {
+                    errorDisplay(input.id, "Le champs doit contenir entre 3 et 20 caractères")
+                } else if (!input.value.match(letterRegex)){
+                    errorDisplay(input.id, "Le champs doit contenir que des lettres")
+                } else {
+                    errorDisplay(input.id, "", true)
+                }
                 break
             case "address":
-                addressChecker(input.id, input.value.trim())
-                break
-            case "city":
-                cityChecker(input.id, input.value.trim())
+                if (input.value.length < 3 || input.value.length > 50) {
+                    errorDisplay(input.id, "Le champs doit contenir entre 3 et 50 caractères")
+                } else {
+                    errorDisplay(input.id, "", true)
+                }
                 break
             case "email":
-                emailChecker(input.id, input.value.trim())
+                if (!input.value.match(emailRegex)) {
+                    errorDisplay(input.id, "Veuillez entrer un email valide")
+                } else {
+                    errorDisplay(input.id, "", true)
+                }
                 break
-            default: 
+            default:
                 null
         }
     })
 }
 
-/** 
- * Form function
- * @param { string } id
- * @param { string } message
- * @param { boolean } valid
- */ 
+function errorDisplay (id, message, valid) {
+    const error = document.getElementById(`${id}ErrorMsg`)
 
-// Function pour le message d'erreur
-function errorDisplay(id, message, valid) {
-    const errorMessage = document.getElementById(`${id}ErrorMsg`)
     if (valid) {
-        errorMessage.textContent = ""
+        error.textContent = ""
     } else {
-        errorMessage.textContent = message
+        error.textContent = message
     }
 }
-// Checking input for the firstname
-function firstnameChecker(id, value) {
-    if(value.length < 3) {
-        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
-    } else if (value.length > 20) {
-        errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
-    } else if (!value.match(letterRegex)) {
-        errorDisplay(id, `Le champs doit contenir que des lettres`)
-    } else {
-        errorDisplay(id, "", true)
-        firstname = value
-    }
-}
-// Checking input for the lastname
-function lastnameChecker(id, value) {
-    if(value.length < 3) {
-        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
-    } else if (value.length > 20) {
-        errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
-    } else if (!value.match(letterRegex)) {
-        errorDisplay(id, `Le champs doit contenir que des lettres`)
-    } else {
-        errorDisplay(id, "", true)
-        lastname = value
-    }
-}
-// Checking input for the address
-function addressChecker(id, value) {
-    if(value.length < 3) {
-        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
-    } else if (value.length > 50) {
-        errorDisplay(id, `Le champs doit contenir au maximum 50 caractères`)
-    } else {
-        errorDisplay(id, "", true)
-        address = value
-    }
-}
-// Checking input for the city
-function cityChecker(id, value) {
-    if(value.length < 3) {
-        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
-    } else if (value.length > 20) {
-        errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
-    } else if (!value.match(letterRegex)) {
-        errorDisplay(id, `Le champs doit contenir que des lettres`)
-    } else {
-        errorDisplay(id, "", true)
-        city = value
-    }
-}
-// Checking input for the email
-function emailChecker(id, value) {
-    if (!value.match(emailRegex)) {
-        errorDisplay(id, "Veuillez entrez un email valide")
-    } else {
-        errorDisplay(id, "", true)
-        email = value
-    }
-}
-
-
-const order = document.querySelector(".cart__order__form")
 
 order.addEventListener("submit", (e) => {
     e.preventDefault()
-    // Fonction de vérification des inputs
-    inputChecker()
-    // Création de l'object de la requête 
-    const body = {
-        contact: {
-            firstName: firstname,
-            lastName: lastname,
-            address: address,
-            city: city,
-            email: email,
-        },
-        products: productsId,
-    }
+    checkInput()
+    let error = 0
 
-    console.log(body)
-    // Si les variables sont définies
-    if (firstname && lastname && address && city && email) {
-        // Vider tout les inputs
-        inputs.forEach((input) => {
-            input.value = ""
-        })
+    inputsError.forEach((errorDisplayed) => {
+        if (!errorDisplayed.innerText == "") {
+            error++
+            console.log(error);
+        }
+    })
+
+    if (error === 0) {
+        const sendForm = {
+            contact: {
+                firstName: firstName.value,
+                lastName: lastName.value,
+                address: address.value,
+                city: city.value,
+                email: email.value
+            },
+            products: productsId,
+        }
+        console.log(sendForm);
+
         // Rêquete post avec fetch API : envoi des données format JSON, l'api nous réponds en envoyant un numéro de commande
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
@@ -280,7 +227,7 @@ order.addEventListener("submit", (e) => {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(body),
+            body: JSON.stringify(sendForm),
         }) 
         .then((res) => res.json())
         .then((data) => {
