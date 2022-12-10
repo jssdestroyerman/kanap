@@ -1,6 +1,4 @@
 const cartItems  = document.getElementById("cart__items")
-const cartTotalQuantity = document.getElementById("totalQuantity")
-const cartTotalprice = document.getElementById("totalPrice")
 
 const products = JSON.parse(localStorage.getItem("products"))
 console.log(products); // Log du localStorage
@@ -56,29 +54,15 @@ function productDisplay(product, color, quantity) {
         </div>
     </article>`
 
-    // Appel des function pour supprimer et modifier la quantité des produits
+    // Supprimer un article
     deleteProduct()
+    // Modifier la quantité d'un article
     modifyQuantity(quantity)
-
-    //-------------------------------------------------------------
-
-    // Calcul du prix total et la Quantité totale
-    // Prix total
-    const totalPrice = product.price * quantity
-
-    // Création d'un array calcTotalPrice pour stocker les prix
-    calcTotalPrice.push(totalPrice)
-    let finalPrice = calcTotalPrice.reduce((a,b) => a + b)
-
-    // Création d'un array calcTotalQuantity pour stocker la quantité
-    calcTotalQuantity.push(quantity)
-    let finalQuantity = calcTotalQuantity.reduce((a,b) => a + b)
-
-    // Injection sur le DOM
-    cartTotalQuantity.innerText = finalQuantity
-    cartTotalprice.innerText = finalPrice
+    // Calculer le prix total
+    totalPrice(product,quantity)
+    // Calculer la quantité totale d'article
+    totalQuantity(quantity)
 }   
-
 
 // Function pour supprimer un produit
 function deleteProduct() {
@@ -137,6 +121,32 @@ function modifyQuantity(quantity) {
         })
     }
 }
+
+function totalPrice(product, quantity) {
+    const cartTotalprice = document.getElementById("totalPrice")
+    // Calcul du prix total et la Quantité totale
+    // Prix total
+    const totalPrice = product.price * quantity
+
+    // Création d'un array calcTotalPrice pour stocker les prix
+    calcTotalPrice.push(totalPrice)
+    let finalPrice = calcTotalPrice.reduce((a,b) => a + b)
+
+    // Injection sur le DOM
+    cartTotalprice.innerText = finalPrice
+}
+
+function totalQuantity(quantity) {
+    const cartTotalQuantity = document.getElementById("totalQuantity")
+    // Création d'un array calcTotalQuantity pour stocker la quantité
+     calcTotalQuantity.push(quantity)
+     let finalQuantity = calcTotalQuantity.reduce((a,b) => a + b)
+
+     // Injection sur le DOM
+    cartTotalQuantity.innerText = finalQuantity
+}
+
+/****************** FORM *******************/
 
 // Regex pour vérifier le champs entré dans les inputs
 const emailRegex = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
