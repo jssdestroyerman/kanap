@@ -1,6 +1,4 @@
 const cartItems  = document.getElementById("cart__items")
-const cartTotalQuantity = document.getElementById("totalQuantity")
-const cartTotalprice = document.getElementById("totalPrice")
 
 const products = JSON.parse(localStorage.getItem("products"))
 console.log(products); // Log du localStorage
@@ -17,7 +15,6 @@ for (let i of products){
 }
 
 // Récuperer les produits via l'API fetch, récupération du bon produit avec le paramètre id
-
 async function productAPI(id, color, quantity) {
     await fetch(`http://localhost:3000/api/products/${id}`)
         .then((res) => res.json())
@@ -32,7 +29,7 @@ async function productAPI(id, color, quantity) {
  * @param { number } quantity
  */
 function productDisplay(product, color, quantity) {
-    // console.log(product);
+
     // += Pour afficher le produit de chaque tour de boucle
     cartItems.innerHTML += 
     `<article class="cart__item" data-id="${product._id}" data-color="${color}">
@@ -57,29 +54,15 @@ function productDisplay(product, color, quantity) {
         </div>
     </article>`
 
-    // Appel des function pour supprimer et modifier la quantité des produits
+    // Supprimer un article
     deleteProduct()
+    // Modifier la quantité d'un article
     modifyQuantity(quantity)
-
-    //-------------------------------------------------------------
-
-    // Calcul du prix total et la Quantité totale
-    // Prix total
-    const totalPrice = product.price * quantity
-
-    // Création d'un array calcTotalPrice pour stocker les prix
-    calcTotalPrice.push(totalPrice)
-    let finalPrice = calcTotalPrice.reduce((a,b) => a + b)
-
-    // Création d'un array calcTotalQuantity pour stocker la quantité
-    calcTotalQuantity.push(quantity)
-    let finalQuantity = calcTotalQuantity.reduce((a,b) => a + b)
-
-    // Injection sur le DOM
-    cartTotalQuantity.innerText = finalQuantity
-    cartTotalprice.innerText = finalPrice
+    // Calculer le prix total
+    totalPrice(product,quantity)
+    // Calculer la quantité totale d'article
+    totalQuantity(quantity)
 }   
-
 
 // Function pour supprimer un produit
 function deleteProduct() {
@@ -139,140 +122,129 @@ function modifyQuantity(quantity) {
     }
 }
 
+function totalPrice(product, quantity) {
+    const cartTotalprice = document.getElementById("totalPrice")
+    // Calcul du prix total et la Quantité totale
+    // Prix total
+    const totalPrice = product.price * quantity
 
-const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-const letterRegex = /^[a-zA-z- ]*$/;
+    // Création d'un array calcTotalPrice pour stocker les prix
+    calcTotalPrice.push(totalPrice)
+    let finalPrice = calcTotalPrice.reduce((a,b) => a + b)
+
+    // Injection sur le DOM
+    cartTotalprice.innerText = finalPrice
+}
+
+function totalQuantity(quantity) {
+    const cartTotalQuantity = document.getElementById("totalQuantity")
+    // Création d'un array calcTotalQuantity pour stocker la quantité
+     calcTotalQuantity.push(quantity)
+     let finalQuantity = calcTotalQuantity.reduce((a,b) => a + b)
+
+     // Injection sur le DOM
+    cartTotalQuantity.innerText = finalQuantity
+}
+
+
+
+
+// FORM ------------------------------>
+
+const emailRegex = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
+const letterRegex = /^[a-zA-Z-]+$/
+
 const inputs = document.querySelectorAll(".cart__order__form__question input")
+const inputsError = document.querySelectorAll(".cart__order__form__question p")
+const order = document.querySelector(".cart__order__form")
+const firstName = document.getElementById("firstName")
+const lastName = document.getElementById("lastName")
+const address = document.getElementById("address")
+const city = document.getElementById("city")
+const email = document.getElementById("email")
 
-let firstname, lastname, address, city, email
-
-// Function de vérification des inputs, dans chaque input, on récupère son id et je lance la function correspondante en mettant comme paramètre son id et sa value
-function inputChecker() {
+// Function pour vérifier le champs entré dans les inputs
+function checkInput() {
     inputs.forEach((input) => {
-        switch(input.id) {
+        switch (input.id) {
             case "firstName":
-                firstnameChecker(input.id, input.value.trim())
-                break
             case "lastName":
-                lastnameChecker(input.id, input.value.trim())
+            case "city":
+                if (input.value.length < 3 || input.value.length > 20) {
+                    errorDisplay(input.id, "Le champs doit contenir entre 3 et 20 caractères")
+                } else if (!input.value.match(letterRegex)){
+                    errorDisplay(input.id, "Le champs doit contenir que des lettres et ne doit pas avoir d'espace")
+                } else {
+                    errorDisplay(input.id, "", true)
+                }
                 break
             case "address":
-                addressChecker(input.id, input.value.trim())
-                break
-            case "city":
-                cityChecker(input.id, input.value.trim())
+                if (input.value.length < 3 || input.value.length > 50) {
+                    errorDisplay(input.id, "Le champs doit contenir entre 3 et 50 caractères")
+                } else {
+                    errorDisplay(input.id, "", true)
+                }
                 break
             case "email":
-                emailChecker(input.id, input.value.trim())
+                if (!input.value.match(emailRegex)) {
+                    errorDisplay(input.id, "Veuillez entrer un email valide")
+                } else {
+                    errorDisplay(input.id, "", true)
+                }
                 break
-            default: 
+            default:
                 null
         }
     })
 }
 
-/** 
- * Form function
+
+/**
+ *  Function pour afficher un message d'erreur
  * @param { string } id
  * @param { string } message
  * @param { boolean } valid
- */ 
+ */
+function errorDisplay (id, message, valid) {
+    const error = document.getElementById(`${id}ErrorMsg`)
 
-// Function pour le message d'erreur
-function errorDisplay(id, message, valid) {
-    const errorMessage = document.getElementById(`${id}ErrorMsg`)
     if (valid) {
-        errorMessage.textContent = ""
+        error.textContent = ""
     } else {
-        errorMessage.textContent = message
-    }
-}
-// Checking input for the firstname
-function firstnameChecker(id, value) {
-    if(value.length < 3) {
-        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
-    } else if (value.length > 20) {
-        errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
-    } else if (!value.match(letterRegex)) {
-        errorDisplay(id, `Le champs doit contenir que des lettres`)
-    } else {
-        errorDisplay(id, "", true)
-        firstname = value
-    }
-}
-// Checking input for the lastname
-function lastnameChecker(id, value) {
-    if(value.length < 3) {
-        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
-    } else if (value.length > 20) {
-        errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
-    } else if (!value.match(letterRegex)) {
-        errorDisplay(id, `Le champs doit contenir que des lettres`)
-    } else {
-        errorDisplay(id, "", true)
-        lastname = value
-    }
-}
-// Checking input for the address
-function addressChecker(id, value) {
-    if(value.length < 3) {
-        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
-    } else if (value.length > 50) {
-        errorDisplay(id, `Le champs doit contenir au maximum 50 caractères`)
-    } else {
-        errorDisplay(id, "", true)
-        address = value
-    }
-}
-// Checking input for the city
-function cityChecker(id, value) {
-    if(value.length < 3) {
-        errorDisplay(id, "Le champs doit contenir au minimum 3 caractères")
-    } else if (value.length > 20) {
-        errorDisplay(id, `Le champs doit contenir au maximum 20 caractères`)
-    } else if (!value.match(letterRegex)) {
-        errorDisplay(id, `Le champs doit contenir que des lettres`)
-    } else {
-        errorDisplay(id, "", true)
-        city = value
-    }
-}
-// Checking input for the email
-function emailChecker(id, value) {
-    if (!value.match(emailRegex)) {
-        errorDisplay(id, "Veuillez entrez un email valide")
-    } else {
-        errorDisplay(id, "", true)
-        email = value
+        error.textContent = message
     }
 }
 
-
-const order = document.querySelector(".cart__order__form")
-
+// Au click sur le bouton "Commander !""
 order.addEventListener("submit", (e) => {
     e.preventDefault()
-    // Fonction de vérification des inputs
-    inputChecker()
-    // Création de l'object de la requête 
-    const body = {
-        contact: {
-            firstName: firstname,
-            lastName: lastname,
-            address: address,
-            city: city,
-            email: email,
-        },
-        products: productsId,
-    }
+    // Vérification des inputs
+    checkInput()
 
-    console.log(body)
-    // Si les variables sont définies
-    if (firstname && lastname && address && city && email) {
-        // Vider tout les inputs
-        inputs.forEach((input) => {
-            input.value = ""
-        })
+    let error = 0
+    // Si il y une/des erreur(s) dans un/des input(s) alors j'incrémente la variable error de 1
+    inputsError.forEach((errorDisplayed) => {
+        if (!errorDisplayed.innerText == "") {
+            error++
+            console.log(error);
+        }
+    })
+
+    // error = 0 donc il n'y a pas d'erreur
+    if (error === 0) {
+        // Récupération des données entrée sur le formulaire
+        const sendForm = {
+            contact: {
+                firstName: firstName.value.trim(),
+                lastName: lastName.value.trim(),
+                address: address.value.trim(),
+                city: city.value.trim(),
+                email: email.value.trim(),
+            },
+            products: productsId,
+        }
+        console.log(sendForm);
+
         // Rêquete post avec fetch API : envoi des données format JSON, l'api nous réponds en envoyant un numéro de commande
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
@@ -280,7 +252,7 @@ order.addEventListener("submit", (e) => {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(body),
+            body: JSON.stringify(sendForm),
         }) 
         .then((res) => res.json())
         .then((data) => {

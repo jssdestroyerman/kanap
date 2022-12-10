@@ -22,10 +22,10 @@ async function productAPI() {
 }
 productAPI()
 
+// Afficher les éléments dans le DOM
 function productDisplay(product) {
     console.log(product);
-    
-    // Afficher les éléments dans le DOM
+
 
     // Boucle for pour afficher seulement les couleurs disponibles sur cet article
     for (let i of product.colors) {
