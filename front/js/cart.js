@@ -210,11 +210,11 @@ order.addEventListener("submit", (e) => {
     if (error === 0) {
         const sendForm = {
             contact: {
-                firstName: firstName.value,
-                lastName: lastName.value,
-                address: address.value,
-                city: city.value,
-                email: email.value
+                firstName: firstName.value.trim(),
+                lastName: lastName.value.trim(),
+                address: address.value.trim(),
+                city: city.value.trim(),
+                email: email.value.trim(),
             },
             products: productsId,
         }
