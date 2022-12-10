@@ -17,7 +17,6 @@ for (let i of products){
 }
 
 // Récuperer les produits via l'API fetch, récupération du bon produit avec le paramètre id
-
 async function productAPI(id, color, quantity) {
     await fetch(`http://localhost:3000/api/products/${id}`)
         .then((res) => res.json())
@@ -139,9 +138,10 @@ function modifyQuantity(quantity) {
     }
 }
 
-
+// Regex pour vérifier le champs entré dans les inputs
 const emailRegex = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
 const letterRegex = /([A-Z]+[A-Z ])\w+/gi
+
 const inputs = document.querySelectorAll(".cart__order__form__question input")
 const inputsError = document.querySelectorAll(".cart__order__form__question p")
 const order = document.querySelector(".cart__order__form")
@@ -151,6 +151,7 @@ const address = document.getElementById("address")
 const city = document.getElementById("city")
 const email = document.getElementById("email")
 
+// Function pour vérifier le champs entré dans les inputs
 function checkInput() {
     inputs.forEach((input) => {
         switch (input.id) {
@@ -185,6 +186,7 @@ function checkInput() {
     })
 }
 
+// Function pour afficher un message d'erreur
 function errorDisplay (id, message, valid) {
     const error = document.getElementById(`${id}ErrorMsg`)
 
@@ -195,11 +197,14 @@ function errorDisplay (id, message, valid) {
     }
 }
 
+// Au click sur le bouton "Commander !""
 order.addEventListener("submit", (e) => {
     e.preventDefault()
+    // Vérification des inputs
     checkInput()
-    let error = 0
 
+    let error = 0
+    // Si il y une/des erreur(s) dans un/des input(s) alors j'incrémente la variable error de 1
     inputsError.forEach((errorDisplayed) => {
         if (!errorDisplayed.innerText == "") {
             error++
@@ -207,7 +212,9 @@ order.addEventListener("submit", (e) => {
         }
     })
 
+    // error = 0 donc il n'y a pas d'erreur
     if (error === 0) {
+        // Récupération des données entrée sur le formulaire
         const sendForm = {
             contact: {
                 firstName: firstName.value.trim(),
