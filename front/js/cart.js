@@ -141,7 +141,7 @@ function modifyQuantity(quantity) {
 
 
 const emailRegex = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
-const letterRegex = /^[a-zA-z- ]*$/
+const letterRegex = /([A-Z]+[A-Z ])\w+/gi
 const inputs = document.querySelectorAll(".cart__order__form__question input")
 const inputsError = document.querySelectorAll(".cart__order__form__question p")
 const order = document.querySelector(".cart__order__form")
