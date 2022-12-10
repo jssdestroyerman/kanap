@@ -148,7 +148,6 @@ function totalQuantity(quantity) {
 
 /****************** FORM *******************/
 
-// Regex pour vérifier le champs entré dans les inputs
 const emailRegex = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
 const letterRegex = /([A-Z]+[A-Z ])\w+/gi
 
@@ -196,7 +195,13 @@ function checkInput() {
     })
 }
 
-// Function pour afficher un message d'erreur
+
+/**
+ *  Function pour afficher un message d'erreur
+ * @param { string } id
+ * @param { string } message
+ * @param { boolean } valid
+ */
 function errorDisplay (id, message, valid) {
     const error = document.getElementById(`${id}ErrorMsg`)
 
