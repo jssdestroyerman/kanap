@@ -79,7 +79,7 @@ addTocart.addEventListener("click", () => {
     // Vérification si les champs sont vides, inférieur à 1 ou supérieur à 100 et ajout des produits au localStorage
     if (colors.value === "" || quantity.value < 1 || quantity.value > 100) {
         alert("Veuillez choisir une couleur et un nombre d'article entre 1 et 100")
-    } else if  (productInLocalStorage) {
+    } else if (productInLocalStorage) {
         storageProduct()
     } else {
         productInLocalStorage = []
