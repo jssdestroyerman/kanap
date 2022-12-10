@@ -29,7 +29,7 @@ async function productAPI(id, color, quantity) {
  * @param { number } quantity
  */
 function productDisplay(product, color, quantity) {
-    // console.log(product);
+
     // += Pour afficher le produit de chaque tour de boucle
     cartItems.innerHTML += 
     `<article class="cart__item" data-id="${product._id}" data-color="${color}">
@@ -151,9 +151,8 @@ function totalQuantity(quantity) {
 
 // FORM ------------------------------>
 
-
 const emailRegex = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
-const letterRegex = /([A-Z]+[A-Z ])\w+/gi
+const letterRegex = /^[a-zA-Z-]+$/
 
 const inputs = document.querySelectorAll(".cart__order__form__question input")
 const inputsError = document.querySelectorAll(".cart__order__form__question p")
@@ -174,7 +173,7 @@ function checkInput() {
                 if (input.value.length < 3 || input.value.length > 20) {
                     errorDisplay(input.id, "Le champs doit contenir entre 3 et 20 caractères")
                 } else if (!input.value.match(letterRegex)){
-                    errorDisplay(input.id, "Le champs doit contenir que des lettres")
+                    errorDisplay(input.id, "Le champs doit contenir que des lettres et ne doit pas avoir d'espace")
                 } else {
                     errorDisplay(input.id, "", true)
                 }
