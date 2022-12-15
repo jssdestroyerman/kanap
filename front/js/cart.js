@@ -3,7 +3,7 @@ const cartItems  = document.getElementById("cart__items")
 const products = JSON.parse(localStorage.getItem("products"))
 console.log(products); // Log du localStorage
 
-const arrProduct = []
+
 const calcTotalQuantity = []
 const calcTotalPrice = []
 const productsId = []
