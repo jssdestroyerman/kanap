@@ -229,9 +229,9 @@ order.addEventListener("submit", (e) => {
             console.log(error);
         }
     })
-
-    // error = 0 donc il n'y a pas d'erreur
-    if (error === 0) {
+    
+    // Si il n'y a pas d'erreur(s) et qu'il y a des produits dans le panier
+    if (error === 0 && products) {
         // Récupération des données entrée sur le formulaire
         const sendForm = {
             contact: {
@@ -263,4 +263,5 @@ order.addEventListener("submit", (e) => {
         // Vider le localStorage si il n'y a pas d'erreur
         .then(localStorage.removeItem("products"))
     }
+
 })
