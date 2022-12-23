@@ -122,9 +122,9 @@ function modifyQuantity(quantity) {
     }
 }
 
+// Calcul du prix total
 function totalPrice(product, quantity) {
     const cartTotalprice = document.getElementById("totalPrice")
-    // Calcul du prix total et la Quantité totale
     // Prix total
     const totalPrice = product.price * quantity
 
@@ -136,6 +136,7 @@ function totalPrice(product, quantity) {
     cartTotalprice.innerText = finalPrice
 }
 
+// Calcul de la quantité totale
 function totalQuantity(quantity) {
     const cartTotalQuantity = document.getElementById("totalQuantity")
     // Création d'un array calcTotalQuantity pour stocker la quantité
